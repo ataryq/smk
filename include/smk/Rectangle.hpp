@@ -5,6 +5,7 @@
 #ifndef SMK_RECTANGLE
 #define SMK_RECTANGLE
 
+//test
 #include <glm/glm.hpp>
 
 namespace smk {
