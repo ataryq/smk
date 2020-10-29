@@ -1,14 +1,5 @@
 add_subdirectory(assets)
 
-if(EMSCRIPTEN)
-  # Copy the index.html file.
-  configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/index.html
-    ${CMAKE_CURRENT_BINARY_DIR}/index.html
-    COPYONLY
-  )
-endif()
-
 function(add_example target input)
   set(ns_target smk_example_${target})
   add_executable(${ns_target} ${input})
