@@ -14,7 +14,7 @@ add_subdirectory(third_party)
 
 project(smk
   LANGUAGES CXX
-  VERSION 0.2.${smk_git_version}
+  VERSION 1.0.0
 )
 
 add_library(smk STATIC

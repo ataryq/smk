@@ -126,7 +126,7 @@ class TransformableRectangle : public Transformable {
     float b = (rectangle.bottom() - 0.5) / texture().height();
     float www = rectangle.width;
     float hhh = rectangle.height;
-    SetVertexArray(VertexArray(std::vector<Vertex>({
+    SetVertexArray(VertexArray(std::vector<Vertex2D>({
         {{0.f, 0.f}, {l, t}},
         {{0.f, hhh}, {l, b}},
         {{www, hhh}, {r, b}},
@@ -140,10 +140,10 @@ private:
   virtual void SetVertexArray(VertexArray vertex_array) override {
    Transformable::SetVertexArray(vertex_array);
   }
-  void Rotate(float rotation) override {}
-  void SetRotation(float rotation) override {}
-  void SetCenter(float center_x, float center_y) override {}
-  void SetCenter(const glm::vec2& center) override {}
+  void Rotate(float) override {}
+  void SetRotation(float) override {}
+  void SetCenter(float, float) override {}
+  void SetCenter(const glm::vec2&) override {}
 
   smk::Rectangle rectangle_;
 };
