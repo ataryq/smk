@@ -11,6 +11,9 @@ namespace smk {
 
 /// The vertex structure suitable for a 2D shader.
 struct Vertex2D {
+  Vertex2D(const glm::vec2& space_pos, const glm::vec2& text_pos)
+  	: space_position(space_pos), texture_position(text_pos) {}
+
   glm::vec2 space_position = {0.f, 0.f};
   glm::vec2 texture_position = {0.f, 0.f};
 
