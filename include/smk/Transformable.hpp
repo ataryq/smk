@@ -126,14 +126,12 @@ class TransformableRectangle : public Transformable {
     float b = (rectangle.bottom() - 0.5) / texture().height();
     float www = rectangle.width;
     float hhh = rectangle.height;
-    SetVertexArray(VertexArray(std::vector<Vertex2D>({
-        {{0.f, 0.f}, {l, t}},
-        {{0.f, hhh}, {l, b}},
-        {{www, hhh}, {r, b}},
-        {{0.f, 0.f}, {l, t}},
-        {{www, hhh}, {r, b}},
-        {{www, 0.f}, {r, t}},
-    })));
+    std::vector<Vertex2D> vecVertexes = {
+        {{0.f, 0.f}, {l, t}}, {{0.f, hhh}, {l, b}}, {{www, hhh}, {r, b}},
+        {{0.f, 0.f}, {l, t}}, {{www, hhh}, {r, b}}, {{www, 0.f}, {r, t}},
+    };
+
+    SetVertexArray(vecVertexes);
   }
 
 private:
