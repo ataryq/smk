@@ -35,7 +35,7 @@ Sprite::Sprite(Framebuffer& framebuffer) {
   float b = 1.f;
   float www = framebuffer.color_texture().width();
   float hhh = framebuffer.color_texture().height();
-  SetVertexArray(VertexArray(std::vector<Vertex>({
+  Transformable::SetVertexArray(VertexArray(std::vector<Vertex>({
       {{0.f, 0.f}, {l, b}},
       {{0.f, hhh}, {l, t}},
       {{www, hhh}, {r, t}},
@@ -57,20 +57,7 @@ void Sprite::SetTexture(const Texture& texture) {
 /// @param texture The Texture to be displayed.
 /// @param rectangle A rectangle in the texture to be used.
 void Sprite::SetTextureRectangle(const Rectangle& rectangle) {
-  float l = (rectangle.left + 0.5) / texture().width();
-  float r = (rectangle.right - 0.5) / texture().width();
-  float t = (rectangle.top + 0.5) / texture().height();
-  float b = (rectangle.bottom - 0.5) / texture().height();
-  float www = rectangle.width();
-  float hhh = rectangle.height();
-  SetVertexArray(VertexArray(std::vector<Vertex>({
-      {{0.f, 0.f}, {l, t}},
-      {{0.f, hhh}, {l, b}},
-      {{www, hhh}, {r, b}},
-      {{0.f, 0.f}, {l, t}},
-      {{www, hhh}, {r, b}},
-      {{www, 0.f}, {r, t}},
-  })));
+  SetRectangle(rectangle);
 }
 
 }  // namespace smk

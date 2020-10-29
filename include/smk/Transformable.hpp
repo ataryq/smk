@@ -7,6 +7,7 @@
 
 #include <smk/Drawable.hpp>
 #include <smk/RenderState.hpp>
+#include <smk/Rectangle.hpp>
 
 namespace smk {
 struct Texture;
@@ -36,7 +37,7 @@ class TransformableBase : public Drawable {
   const BlendMode& blend_mode() const { return blend_mode_; }
 
   // VertexArray
-  void SetVertexArray(VertexArray vertex_array);
+  virtual void SetVertexArray(VertexArray vertex_array);
   const VertexArray& vertex_array() const { return vertex_array_; }
 
   // Drawable override
@@ -66,25 +67,25 @@ class Transformable : public TransformableBase {
   virtual ~Transformable() = default;
 
   // Center
-  void SetCenter(float center_x, float center_y);
-  void SetCenter(const glm::vec2& center);
+  virtual void SetCenter(float center_x, float center_y);
+  virtual void SetCenter(const glm::vec2& center);
 
   // Position
-  void Move(const glm::vec2& move);
-  void Move(float x, float y);
-  void SetPosition(float x, float y);
-  void SetPosition(const glm::vec2& position);
+  virtual void Move(const glm::vec2& move);
+  virtual void Move(float x, float y);
+  virtual void SetPosition(float x, float y);
+  virtual void SetPosition(const glm::vec2& position);
 
   // Rotation
-  void Rotate(float rotation);
-  void SetRotation(float rotation);
+  virtual void Rotate(float rotation);
+  virtual void SetRotation(float rotation);
 
   // Scale
-  void SetScale(float scale);
-  void SetScale(const glm::vec2& scale);
-  void SetScale(float scale_x, float scale_y);
-  void SetScaleX(float scale_x);
-  void SetScaleY(float scale_y);
+  virtual void SetScale(float scale);
+  virtual void SetScale(const glm::vec2& scale);
+  virtual void SetScale(float scale_x, float scale_y);
+  virtual void SetScaleX(float scale_x);
+  virtual void SetScaleY(float scale_y);
 
   // Transformable override;
   glm::mat4 transformation() const override;
@@ -96,11 +97,55 @@ class Transformable : public TransformableBase {
   Transformable& operator=(Transformable&&) = default;
   Transformable& operator=(const Transformable&) = default;
 
- private:
+ protected:
   float rotation_ = 0.f;
   glm::vec2 center_ = {0.f, 0.f};
   glm::vec2 position_ = {0.f, 0.f};
   glm::vec2 scale_ = {1.0, 1.0};
+};
+
+class TransformableRectangle : public Transformable {
+ public:
+  bool IsInside(const glm::vec2& pt) const { 
+    smk::Rectangle rect = GetBoundRectangle();
+    return rect.isInside(pt);
+  }
+
+  smk::Rectangle GetBoundRectangle() const {
+    smk::Rectangle outRect = rectangle_;
+    outRect.setPosition(position_);
+    outRect.setSize(outRect.size() * scale_);
+    return outRect;
+  }
+
+  void SetRectangle(const smk::Rectangle& rectangle) {
+    rectangle_ = rectangle;
+    float l = (rectangle.left() + 0.5) / texture().width();
+    float r = (rectangle.right() - 0.5) / texture().width();
+    float t = (rectangle.top() + 0.5) / texture().height();
+    float b = (rectangle.bottom() - 0.5) / texture().height();
+    float www = rectangle.width;
+    float hhh = rectangle.height;
+    SetVertexArray(VertexArray(std::vector<Vertex>({
+        {{0.f, 0.f}, {l, t}},
+        {{0.f, hhh}, {l, b}},
+        {{www, hhh}, {r, b}},
+        {{0.f, 0.f}, {l, t}},
+        {{www, hhh}, {r, b}},
+        {{www, 0.f}, {r, t}},
+    })));
+  }
+
+private:
+  virtual void SetVertexArray(VertexArray vertex_array) override {
+   Transformable::SetVertexArray(vertex_array);
+  }
+  void Rotate(float rotation) override {}
+  void SetRotation(float rotation) override {}
+  void SetCenter(float center_x, float center_y) override {}
+  void SetCenter(const glm::vec2& center) override {}
+
+  smk::Rectangle rectangle_;
 };
 
 /// A 2D Drawable object supporting several transformations:

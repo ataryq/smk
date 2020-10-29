@@ -31,7 +31,7 @@ class Framebuffer;
 ///
 /// window.Draw(sprite);
 /// ~~~
-class Sprite : public Transformable {
+class Sprite : public TransformableRectangle {
  public:
   Sprite() = default;
   Sprite(const Texture& texture);

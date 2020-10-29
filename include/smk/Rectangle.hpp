@@ -11,13 +11,36 @@
 namespace smk {
 
 struct Rectangle {
-  float left;
-  float top;
-  float right;
-  float bottom;
 
-  float width() const { return right - left; }
-  float height() const { return bottom - top; }
+  float x;
+  float y;
+  float width;
+  float height;
+
+  bool isInside(const glm::vec2& pt) const {
+    return pt.x >= x && pt.y >= y && pt.x <= right() && pt.y <= bottom();
+  }
+
+  glm::vec2 size() const { return {width, height}; }
+  glm::vec2 position() const { return {x, y}; }
+
+  void move(const glm::vec2& vec) {
+    x += vec.x;
+    y += vec.y;
+  }
+  void setPosition(const glm::vec2& vec) {
+    x = vec.x;
+    y = vec.y;
+  }
+  void setSize(const glm::vec2& vec) {
+    width = vec.x;
+    height = vec.y;
+  }
+
+  float left() const { return x; }
+  float top() const { return y; }
+  float right() const { return x + width; }
+  float bottom() const { return y + height; }
 };
 
 }  // namespace smk
