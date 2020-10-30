@@ -32,7 +32,7 @@ class Window : public RenderTarget {
  public:
   Window();
   Window(int width, int height, const std::string& title);
-  ~Window();
+  virtual ~Window();
 
   GLFWwindow* window() const;
   float time() const;
