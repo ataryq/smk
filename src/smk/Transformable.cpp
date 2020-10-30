@@ -1,3 +1,4 @@
+#include "..\..\include\smk\Transformable.hpp"
 // Copyright 2019 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
@@ -28,6 +29,10 @@ void Transformable::Rotate(float rotation) {
 /// @param position the position (x,y) of the object.
 void Transformable::SetPosition(const glm::vec2& position) {
   position_ = position;
+}
+
+glm::vec2 Transformable::Position() const {
+  return position_;
 }
 
 /// @brief Set the position of the object to be drawn.
@@ -102,6 +107,10 @@ void Transformable::SetScaleY(float scale_y) {
   scale_.y = scale_y;
 }
 
+glm::vec2 Transformable::Scale() const {
+  return scale_;
+}
+
 /// @brief Increase or decrease the size of the object being drawn.
 /// @return the transformation applied to the object. This is the result of
 ///         applying the translation, rotation, center and scaling to the the
@@ -149,6 +158,46 @@ void TransformableBase::Draw(RenderTarget& target, RenderState state) const {
   state.vertex_array = vertex_array();
   state.blend_mode = blend_mode();
   target.Draw(state);
+}
+
+smk::Rectangle TransformableRectangle::CalculateBoundRectangle(
+    smk::Rectangle inRect, const Transformable* drawable) 
+{
+  smk::Rectangle outRect = inRect;
+  outRect.setPosition(drawable->Position());
+  outRect.setSize(outRect.size() * drawable->Scale());
+  return outRect;
+}
+
+bool TransformableRectangle::IsInside(const glm::vec2& pt) const {
+  smk::Rectangle rect = GetBoundRectangle();
+  return rect.isInside(pt);
+}
+
+smk::Rectangle TransformableRectangle::GetBoundRectangle() const {
+  return CalculateBoundRectangle(rectangle_, this);
+}
+
+void TransformableRectangle::SetRectangle(const smk::Rectangle& rectangle) {
+  rectangle_ = rectangle;
+
+  float l = (rectangle.left() + 0.5) / texture().width();
+  float r = (rectangle.right() - 0.5) / texture().width();
+  float t = (rectangle.top() + 0.5) / texture().height();
+  float b = (rectangle.bottom() - 0.5) / texture().height();
+  float www = rectangle.width;
+  float hhh = rectangle.height;
+
+  std::vector<Vertex2D> vecVertexes = {
+      {{0.f, 0.f}, {l, t}}, {{0.f, hhh}, {l, b}}, {{www, hhh}, {r, b}},
+      {{0.f, 0.f}, {l, t}}, {{www, hhh}, {r, b}}, {{www, 0.f}, {r, t}},
+  };
+
+  SetVertexArray(VertexArray(vecVertexes));
+}
+
+void TransformableRectangle::SetVertexArray(VertexArray vertex_array) {
+  Transformable::SetVertexArray(vertex_array);
 }
 
 /// @brief set the transformation to use for drawing this object, represented as

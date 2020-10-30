@@ -76,6 +76,7 @@ class Transformable : public TransformableBase {
   virtual void Move(float x, float y);
   virtual void SetPosition(float x, float y);
   virtual void SetPosition(const glm::vec2& position);
+  virtual glm::vec2 Position() const;
 
   // Rotation
   virtual void Rotate(float rotation);
@@ -87,6 +88,7 @@ class Transformable : public TransformableBase {
   virtual void SetScale(float scale_x, float scale_y);
   virtual void SetScaleX(float scale_x);
   virtual void SetScaleY(float scale_y);
+  virtual glm::vec2 Scale() const;
 
   // Transformable override;
   glm::mat4 transformation() const override;
@@ -107,40 +109,17 @@ class Transformable : public TransformableBase {
 
 class TransformableRectangle : public Transformable {
  public:
-  bool IsInside(const glm::vec2& pt) const { 
-    smk::Rectangle rect = GetBoundRectangle();
-    return rect.isInside(pt);
-  }
+  static smk::Rectangle CalculateBoundRectangle(
+    smk::Rectangle inRect, const Transformable* drawable);
 
-  smk::Rectangle GetBoundRectangle() const {
-    smk::Rectangle outRect = rectangle_;
-    outRect.setPosition(position_);
-    outRect.setSize(outRect.size() * scale_);
-    return outRect;
-  }
+  bool IsInside(const glm::vec2& pt) const;
 
-  void SetRectangle(const smk::Rectangle& rectangle) {
-    rectangle_ = rectangle;
-    
-    float l = (rectangle.left() + 0.5) / texture().width();
-    float r = (rectangle.right() - 0.5) / texture().width();
-    float t = (rectangle.top() + 0.5) / texture().height();
-    float b = (rectangle.bottom() - 0.5) / texture().height();
-    float www = rectangle.width;
-    float hhh = rectangle.height;
-    
-    std::vector<Vertex2D> vecVertexes = {
-        {{0.f, 0.f}, {l, t}}, {{0.f, hhh}, {l, b}}, {{www, hhh}, {r, b}},
-        {{0.f, 0.f}, {l, t}}, {{www, hhh}, {r, b}}, {{www, 0.f}, {r, t}},
-    };
+  smk::Rectangle GetBoundRectangle() const;
 
-    SetVertexArray(VertexArray(vecVertexes));
-  }
+  void SetRectangle(const smk::Rectangle& rectangle);
 
 private:
-  virtual void SetVertexArray(VertexArray vertex_array) override {
-   Transformable::SetVertexArray(vertex_array);
-  }
+  virtual void SetVertexArray(VertexArray vertex_array) override;
   void Rotate(float) override {}
   void SetRotation(float) override {}
   void SetCenter(float, float) override {}
