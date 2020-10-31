@@ -116,10 +116,17 @@ class TransformableRectangle : public Transformable {
 
   smk::Rectangle GetBoundRectangle() const;
 
-  void SetRectangle(const smk::Rectangle& rectangle);
+  void SetVertexRectangle(const smk::Rectangle& rectangle);
 
-private:
+  void SetSizeRectangle(const smk::Rectangle& rectangle) {
+    float scale_width = rectangle.width / rectangle_.width;
+    float scale_height = rectangle.height / rectangle_.height;
+    SetScale(scale_width, scale_height);
+  }
+
+ private:
   virtual void SetVertexArray(VertexArray vertex_array) override;
+
   void Rotate(float) override {}
   void SetRotation(float) override {}
   void SetCenter(float, float) override {}

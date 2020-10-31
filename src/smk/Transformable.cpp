@@ -178,7 +178,7 @@ smk::Rectangle TransformableRectangle::GetBoundRectangle() const {
   return CalculateBoundRectangle(rectangle_, this);
 }
 
-void TransformableRectangle::SetRectangle(const smk::Rectangle& rectangle) {
+void TransformableRectangle::SetVertexRectangle(const smk::Rectangle& rectangle) {
   rectangle_ = rectangle;
 
   float l = (rectangle.left() + 0.5) / texture().width();

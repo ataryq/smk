@@ -57,7 +57,7 @@ void Sprite::SetTexture(const Texture& texture) {
 /// @param texture The Texture to be displayed.
 /// @param rectangle A rectangle in the texture to be used.
 void Sprite::SetTextureRectangle(const Rectangle& rectangle) {
-  SetRectangle(rectangle);
+  SetVertexRectangle(rectangle);
 }
 
 }  // namespace smk
