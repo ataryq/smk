@@ -27,6 +27,11 @@ glm::vec4 RGB(float red, float green, float blue) {
   return {red, green, blue, 1.f};
 }
 
+float toNorm(int i)
+{
+  return static_cast<float>(i) / 255;
+}
+
 glm::vec4 RGB_255(int red, int green, int blue, int alpha) {
   return {toNorm(red), toNorm(green), toNorm(blue), toNorm(alpha)};
 }

@@ -12,11 +12,6 @@ namespace Color {
 
 glm::vec4 RGBA(float red, float green, float blue, float alpha);
 glm::vec4 RGB(float red, float green, float blue);
-
-constexpr float toNorm(int i) {
-  return static_cast<float>(i) / 255;
-}
-
 glm::vec4 RGB_255(int red, int green, int blue, int alpha);
 
   // Predefined colors.
