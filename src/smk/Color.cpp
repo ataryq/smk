@@ -27,6 +27,10 @@ glm::vec4 RGB(float red, float green, float blue) {
   return {red, green, blue, 1.f};
 }
 
+glm::vec4 RGB_255(int red, int green, int blue, int alpha) {
+  return {toNorm(red), toNorm(green), toNorm(blue), toNorm(alpha)};
+}
+
 // clang-format off
 const glm::vec4 White       = {1.f, 1.f, 1.f, 1.f}; ///< White
 const glm::vec4 Black       = {0.f, 0.f, 0.f, 1.f}; ///< Black

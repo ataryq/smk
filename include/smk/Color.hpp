@@ -17,9 +17,7 @@ constexpr float toNorm(int i) {
   return static_cast<float>(i) / 255;
 }
 
-constexpr glm::vec4 RGB_255(int red, int green, int blue, int alpha) {
-  return {toNorm(red), toNorm(green), toNorm(blue), toNorm(alpha)};
-}
+glm::vec4 RGB_255(int red, int green, int blue, int alpha);
 
   // Predefined colors.
 extern const glm::vec4 White;
